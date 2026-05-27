@@ -1,0 +1,1603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Last Thread — Fashion's Hidden Cost</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --ink: #0a0806;
+    --ash: #1a1612;
+    --dust: #2d2720;
+    --bone: #e8e0d0;
+    --cream: #f5f0e8;
+    --rust: #c4623a;
+    --ember: #e8832a;
+    --gold: #d4a832;
+    --sage: #7a9e7e;
+    --muted: #6b6055;
+    --thread: #a07850;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--bone);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed;
+    width: 12px; height: 12px;
+    background: var(--rust);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, background 0.3s;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--rust);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s, height 0.3s;
+    opacity: 0.5;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    position: fixed;
+    top: 0; left: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rust), var(--gold));
+    z-index: 1000;
+    width: 0%;
+    transition: width 0.1s;
+  }
+
+  /* NAVIGATION */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 900;
+    padding: 24px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: normal;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .nav-scene {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* SCENES */
+  .scene {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ==================== SCENE 1 — OPENING ==================== */
+  #scene1 {
+    background: var(--ink);
+    flex-direction: column;
+    text-align: center;
+  }
+  .stitch-line {
+    position: absolute;
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--thread), transparent);
+    animation: stitch-fall 3s ease-in-out infinite;
+    opacity: 0.3;
+  }
+  @keyframes stitch-fall {
+    0%, 100% { transform: translateY(-20px); opacity: 0.1; }
+    50% { transform: translateY(20px); opacity: 0.4; }
+  }
+  .scene1-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 40px;
+  }
+  .eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--rust);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 0.5s;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 8vw, 96px);
+    font-weight: 900;
+    line-height: 0.95;
+    color: var(--cream);
+    margin-bottom: 32px;
+    opacity: 0;
+    animation: fadeUp 1.2s ease forwards 0.8s;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--rust);
+  }
+  .hero-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.6;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.2s;
+  }
+  .scroll-hint {
+    position: absolute;
+    bottom: 48px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 2s;
+  }
+  .scroll-hint span {
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 48px;
+    background: linear-gradient(to bottom, var(--rust), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ==================== SCENE 2 — BRANDS ==================== */
+  #scene2 {
+    background: var(--ash);
+    flex-direction: column;
+    padding: 80px 48px;
+    gap: 60px;
+  }
+  .section-label {
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    color: var(--rust);
+    text-align: center;
+  }
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    width: 100%;
+    max-width: 1100px;
+  }
+  .brand-card {
+    background: var(--dust);
+    padding: 48px 36px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s ease;
+    border-top: 1px solid rgba(196,98,58,0.2);
+  }
+  .brand-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--rust), var(--gold));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.6s ease;
+  }
+  .brand-card:hover::before { transform: scaleX(1); }
+  .brand-card:hover { transform: translateY(-4px); }
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+  .brand-period {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .brand-stat {
+    margin-bottom: 20px;
+  }
+  .stat-label {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--ember);
+  }
+  .stat-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .brand-bar {
+    height: 2px;
+    background: var(--dust);
+    border: 1px solid rgba(255,255,255,0.05);
+    margin-top: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .brand-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rust), var(--gold));
+    width: 0%;
+    transition: width 2s ease;
+  }
+  .growth-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(122,158,126,0.15);
+    border: 1px solid rgba(122,158,126,0.3);
+    color: var(--sage);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+  }
+  .decline-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: rgba(196,98,58,0.15);
+    border: 1px solid rgba(196,98,58,0.3);
+    color: var(--rust);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    margin-top: 16px;
+  }
+
+  /* Pulse animation on brand cards */
+  .pulse-dot {
+    position: absolute;
+    top: 24px; right: 24px;
+    width: 8px; height: 8px;
+    background: var(--rust);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 0 0 rgba(196,98,58,0.4); }
+    50% { transform: scale(1.2); opacity: 0.8; box-shadow: 0 0 0 8px rgba(196,98,58,0); }
+  }
+
+  /* ==================== SCENE 3 — PRODUCTION MACHINE ==================== */
+  #scene3 {
+    background: var(--ink);
+    flex-direction: column;
+    padding: 100px 48px;
+    gap: 60px;
+    text-align: center;
+  }
+  .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.03);
+    max-width: 900px;
+    width: 100%;
+  }
+  .counter-cell {
+    background: var(--ink);
+    padding: 40px 24px;
+    text-align: center;
+    position: relative;
+  }
+  .counter-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--ember);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .counter-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.6;
+  }
+  .scene3-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 56px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream);
+    max-width: 700px;
+    line-height: 1.2;
+  }
+  .scene3-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--muted);
+    max-width: 580px;
+    line-height: 1.8;
+  }
+
+  /* ==================== SCENE 4 — PLOT TWIST ==================== */
+  #scene4 {
+    background: var(--ash);
+    flex-direction: column;
+    padding: 100px 48px;
+    gap: 48px;
+  }
+  .split-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+    max-width: 1100px;
+    width: 100%;
+  }
+  .split-panel {
+    padding: 60px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+  .split-panel.dark { background: var(--dust); }
+  .split-panel.lit {
+    background: linear-gradient(135deg, rgba(122,158,126,0.08), rgba(122,158,126,0.02));
+    border: 1px solid rgba(122,158,126,0.15);
+  }
+  .split-label {
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .split-label.bad { color: var(--rust); }
+  .split-label.good { color: var(--sage); }
+  .split-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 24px;
+    line-height: 1.2;
+  }
+  .split-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 32px;
+  }
+  .big-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 72px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .big-number.red { color: var(--rust); }
+  .big-number.green { color: var(--sage); }
+  .big-unit {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-top: 8px;
+  }
+  .reveal-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-style: italic;
+    color: var(--cream);
+    text-align: center;
+    max-width: 700px;
+  }
+
+  /* ==================== SCENE 5 — WARDROBE ==================== */
+  #scene5 {
+    background: var(--ink);
+    flex-direction: column;
+    padding: 100px 48px;
+    gap: 60px;
+    text-align: center;
+    position: relative;
+  }
+  .wardrobe-visual {
+    width: 100%;
+    max-width: 800px;
+    height: 280px;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    background: var(--ash);
+  }
+  .wardrobe-inner {
+    display: flex;
+    height: 100%;
+    align-items: flex-end;
+    padding: 24px;
+    gap: 8px;
+    overflow: hidden;
+    position: relative;
+  }
+  .garment {
+    flex-shrink: 0;
+    border-radius: 2px;
+    position: relative;
+  }
+  .garment-new {
+    background: linear-gradient(135deg, var(--ember), var(--gold));
+    width: 48px;
+    animation: clothesBounceIn 0.5s ease backwards;
+  }
+  .garment-old {
+    background: rgba(107,96,85,0.4);
+    width: 48px;
+    animation: clothesFadeOut 3s ease-in-out infinite;
+  }
+  @keyframes clothesBounceIn {
+    from { transform: translateY(-60px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  @keyframes clothesFadeOut {
+    0%, 70% { opacity: 0.4; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(20px); }
+  }
+  .wardrobe-label-new {
+    position: absolute;
+    top: 16px; right: 16px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--ember);
+    text-transform: uppercase;
+  }
+  .wardrobe-label-old {
+    position: absolute;
+    top: 16px; left: 16px;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .scene5-question {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 42px);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--cream);
+    max-width: 700px;
+    line-height: 1.3;
+  }
+  .scene5-question span { color: var(--rust); }
+
+  /* ==================== SCENE 6 — WASTE FLOW ==================== */
+  #scene6 {
+    background: var(--ash);
+    flex-direction: column;
+    padding: 100px 48px;
+    gap: 60px;
+  }
+  .waste-flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    max-width: 1000px;
+    width: 100%;
+  }
+  .flow-step {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    padding: 0 16px;
+  }
+  .flow-step::after {
+    content: '→';
+    position: absolute;
+    right: -12px;
+    top: 28px;
+    color: var(--muted);
+    font-size: 18px;
+  }
+  .flow-step:last-child::after { display: none; }
+  .flow-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    position: relative;
+  }
+  .flow-icon.clean { background: rgba(212,168,50,0.15); border: 1px solid rgba(212,168,50,0.3); }
+  .flow-icon.mixed { background: rgba(196,98,58,0.15); border: 1px solid rgba(196,98,58,0.3); }
+  .flow-icon.contaminated { background: rgba(107,96,85,0.3); border: 1px solid rgba(107,96,85,0.5); }
+  .flow-icon.dead { background: rgba(26,22,18,0.8); border: 1px solid rgba(107,96,85,0.3); }
+  .flow-step-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--bone);
+    margin-bottom: 8px;
+    letter-spacing: 0.1em;
+  }
+  .flow-step-body {
+    font-size: 10px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .waste-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: rgba(255,255,255,0.03);
+    max-width: 900px;
+    width: 100%;
+  }
+  .waste-stat {
+    background: var(--ash);
+    padding: 36px 24px;
+    text-align: center;
+  }
+  .waste-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+  .waste-desc {
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.7;
+  }
+
+  /* ==================== SCENE 7 — THE HEROES ==================== */
+  #scene7 {
+    background: var(--ink);
+    flex-direction: column;
+    padding: 100px 48px;
+    gap: 60px;
+    text-align: center;
+  }
+  .hero-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(20px, 3vw, 32px);
+    font-weight: 300;
+    font-style: italic;
+    color: var(--bone);
+    max-width: 700px;
+    line-height: 1.6;
+    position: relative;
+  }
+  .hero-quote::before {
+    content: '"';
+    font-size: 120px;
+    color: rgba(196,98,58,0.1);
+    position: absolute;
+    top: -40px;
+    left: -20px;
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+  .ragpicker-stats {
+    display: flex;
+    gap: 60px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .rp-stat {
+    text-align: center;
+  }
+  .rp-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .rp-label {
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    color: var(--muted);
+    text-transform: uppercase;
+    line-height: 1.7;
+  }
+  .panipat-block {
+    background: var(--dust);
+    border-left: 2px solid var(--gold);
+    padding: 40px 48px;
+    max-width: 800px;
+    width: 100%;
+    text-align: left;
+  }
+  .panipat-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+  .panipat-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .panipat-flow {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .pf-tag {
+    padding: 6px 14px;
+    border: 1px solid rgba(212,168,50,0.3);
+    color: var(--gold);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .pf-arrow { color: var(--muted); font-size: 14px; }
+
+  /* ==================== SCENE 8 — TIMELINE ==================== */
+  #scene8 {
+    background: var(--ash);
+    flex-direction: column;
+    padding: 100px 48px;
+    gap: 60px;
+    text-align: center;
+  }
+  .timeline-chart {
+    width: 100%;
+    max-width: 900px;
+  }
+  .chart-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .chart-legend {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+  .legend-dot.production { background: var(--ember); }
+  .legend-dot.waste { background: var(--rust); }
+  .chart-area {
+    background: var(--ink);
+    border: 1px solid rgba(255,255,255,0.05);
+    padding: 40px;
+    position: relative;
+    height: 300px;
+  }
+  .chart-svg { width: 100%; height: 100%; overflow: visible; }
+  .year-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 40px 0;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+  .the-question {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(24px, 4vw, 48px);
+    font-weight: 400;
+    color: var(--cream);
+    line-height: 1.4;
+    max-width: 700px;
+  }
+  .the-question .line2 {
+    color: var(--rust);
+    font-style: italic;
+    display: block;
+    margin-top: 8px;
+  }
+
+  /* ==================== SCENE 9 — CLOSING ==================== */
+  #scene9 {
+    background: var(--ink);
+    flex-direction: column;
+    padding: 100px 48px;
+    gap: 60px;
+    text-align: center;
+    min-height: 100vh;
+  }
+  .closing-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(32px, 5vw, 64px);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: 1.1;
+    max-width: 800px;
+  }
+  .closing-title em { color: var(--rust); font-style: italic; }
+  .action-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    max-width: 900px;
+    width: 100%;
+  }
+  .action-card {
+    background: var(--dust);
+    padding: 40px 32px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid transparent;
+  }
+  .action-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(196,98,58,0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .action-card:hover { border-color: rgba(196,98,58,0.3); transform: translateY(-4px); }
+  .action-card:hover::before { opacity: 1; }
+  .action-icon { font-size: 36px; margin-bottom: 20px; }
+  .action-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: 12px;
+  }
+  .action-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    font-weight: 300;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .action-impact {
+    margin-top: 20px;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--sage);
+  }
+  .final-line {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.8;
+  }
+  .final-line strong {
+    color: var(--bone);
+    font-weight: 400;
+    font-style: normal;
+  }
+  .footer-credit {
+    padding: 60px 48px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.04);
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* DIVIDER */
+  .scene-divider {
+    width: 48px;
+    height: 1px;
+    background: var(--rust);
+    margin: 0 auto;
+    opacity: 0.5;
+  }
+
+  /* GRAIN OVERLAY */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9990;
+    opacity: 0.4;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    .brands-grid { grid-template-columns: 1fr; }
+    .split-container { grid-template-columns: 1fr; }
+    .counter-grid { grid-template-columns: repeat(2, 1fr); }
+    .waste-stats { grid-template-columns: repeat(2, 1fr); }
+    .action-cards { grid-template-columns: 1fr; }
+    .waste-flow { flex-direction: column; gap: 24px; }
+    .flow-step::after { display: none; }
+    #scene2, #scene3, #scene4, #scene5, #scene6, #scene7, #scene8, #scene9 { padding: 80px 24px; }
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+
+<style>
+  .parallax-layer {
+    will-change: transform;
+  }
+
+  .scene-transition-overlay {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(196,98,58,0.08), transparent 70%);
+    mix-blend-mode: screen;
+    opacity: 0;
+    z-index: 9980;
+  }
+
+  .floating-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(232,131,42,0.35);
+    border-radius: 50%;
+    pointer-events: none;
+    filter: blur(1px);
+  }
+
+  .landfill-pile {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    right: 0;
+    height: 0%;
+    background: linear-gradient(to top, rgba(26,22,18,0.95), rgba(45,39,32,0.7));
+    transition: height 0.3s ease;
+    z-index: 1;
+  }
+
+  #scene5 .wardrobe-visual {
+    position: relative;
+  }
+
+  .cinematic-glow {
+    position: fixed;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,131,42,0.08), transparent 70%);
+    pointer-events: none;
+    z-index: 9970;
+    transform: translate(-50%, -50%);
+    mix-blend-mode: screen;
+  }
+</style>
+
+</head>
+<body>
+
+<div class="scene-transition-overlay" id="sceneOverlay"></div>
+<div class="cinematic-glow" id="cinematicGlow"></div>
+
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav>
+  <div class="nav-logo">The Last Thread</div>
+  <div class="nav-scene" id="navScene">Scene 01 — The Scale</div>
+</nav>
+
+<!-- ==================== SCENE 1 ==================== -->
+<section class="scene" id="scene1">
+  <!-- Stitch lines background -->
+  <div class="stitch-line" style="left:10%; height:200px; top:20%; animation-delay:0s;"></div>
+  <div class="stitch-line" style="left:25%; height:300px; top:10%; animation-delay:0.5s;"></div>
+  <div class="stitch-line" style="left:40%; height:150px; top:30%; animation-delay:1s;"></div>
+  <div class="stitch-line" style="left:60%; height:250px; top:15%; animation-delay:0.3s;"></div>
+  <div class="stitch-line" style="left:75%; height:180px; top:25%; animation-delay:0.8s;"></div>
+  <div class="stitch-line" style="left:90%; height:220px; top:20%; animation-delay:0.2s;"></div>
+
+  <div class="scene1-content">
+    <p class="eyebrow">A Documentary in Data</p>
+    <h1 class="hero-title">The Last<br><em>Thread</em></h1>
+    <p class="hero-sub">Three brands. Millions of garments.<br>One question no one is asking.</p>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll to begin</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ==================== SCENE 2 ==================== -->
+<section class="scene" id="scene2" style="min-height:auto; padding-top:120px; padding-bottom:120px;">
+  <p class="section-label reveal">01 — The Brands</p>
+
+  <div class="brands-grid reveal reveal-delay-1">
+
+    <div class="brand-card">
+      <div class="pulse-dot"></div>
+      <div class="brand-name">H&M</div>
+      <div class="brand-period">Q1 2026 · Dec '25 – Feb '26</div>
+      <div class="brand-stat">
+        <div class="stat-label">Net Revenue</div>
+        <div class="stat-value">SEK 49.6B</div>
+        <div class="stat-sub">~$4.7 Billion USD</div>
+      </div>
+      <div class="brand-stat">
+        <div class="stat-label">Active Stores</div>
+        <div class="stat-value">4,050</div>
+        <div class="stat-sub">Across 75 markets worldwide</div>
+      </div>
+      <div class="brand-stat">
+        <div class="stat-label">Production Network</div>
+        <div class="stat-value">800+</div>
+        <div class="stat-sub">Independent factories, 23 countries</div>
+      </div>
+      <div class="brand-bar"><div class="brand-bar-fill" data-width="85"></div></div>
+      <div class="decline-badge">▼ 1% in local currencies</div>
+    </div>
+
+    <div class="brand-card">
+      <div class="pulse-dot" style="animation-delay:0.5s;"></div>
+      <div class="brand-name">Zudio</div>
+      <div class="brand-period">Q4 FY2026 · Jan–Mar '26 · Tata Group</div>
+      <div class="brand-stat">
+        <div class="stat-label">Est. Net Revenue</div>
+        <div class="stat-value">₹3,800–4,000 Cr</div>
+        <div class="stat-sub">~75–80% of Trent's ₹4,937 Cr standalone</div>
+      </div>
+      <div class="brand-stat">
+        <div class="stat-label">Active Stores</div>
+        <div class="stat-value">963</div>
+        <div class="stat-sub">India + UAE · 109 opened in Q4 alone</div>
+      </div>
+      <div class="brand-stat">
+        <div class="stat-label">Sales Per Minute</div>
+        <div class="stat-value">220</div>
+        <div class="stat-sub">T-shirts sold every 60 seconds (FY25)</div>
+      </div>
+      <div class="brand-bar"><div class="brand-bar-fill" data-width="70"></div></div>
+      <div class="growth-badge">▲ +20% YoY Growth</div>
+    </div>
+
+    <div class="brand-card">
+      <div class="pulse-dot" style="animation-delay:1s;"></div>
+      <div class="brand-name">Max Fashion</div>
+      <div class="brand-period">FY2025–26 · Full Year · Landmark Group</div>
+      <div class="brand-stat">
+        <div class="stat-label">Est. India Revenue</div>
+        <div class="stat-value">₹5,500–6,500 Cr</div>
+        <div class="stat-sub">True offline + online combined estimate</div>
+      </div>
+      <div class="brand-stat">
+        <div class="stat-label">Active Stores</div>
+        <div class="stat-value">500+</div>
+        <div class="stat-sub">200+ Indian cities · 40–50 new openings planned</div>
+      </div>
+      <div class="brand-stat">
+        <div class="stat-label">New Styles</div>
+        <div class="stat-value">Weekly</div>
+        <div class="stat-sub">Agile supply chain model · Domestic + Asian imports</div>
+      </div>
+      <div class="brand-bar"><div class="brand-bar-fill" data-width="55"></div></div>
+      <div class="growth-badge">▲ +11–14% YoY Growth</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ==================== SCENE 3 ==================== -->
+<section class="scene" id="scene3">
+  <p class="section-label reveal">02 — The Machine</p>
+  <h2 class="scene3-title reveal reveal-delay-1">When does <em>fast</em> become too fast?</h2>
+  <div class="scene-divider reveal reveal-delay-2"></div>
+
+  <div class="counter-grid reveal reveal-delay-2">
+    <div class="counter-cell">
+      <div class="counter-number" data-target="220">0</div>
+      <div class="counter-label">T-shirts sold<br>per minute<br>(Zudio)</div>
+    </div>
+    <div class="counter-cell">
+      <div class="counter-number" data-target="109">0</div>
+      <div class="counter-label">Zudio stores<br>opened in<br>90 days</div>
+    </div>
+    <div class="counter-cell">
+      <div class="counter-number" data-target="800">0</div>
+      <div class="counter-label">H&M factories<br>across<br>23 countries</div>
+    </div>
+    <div class="counter-cell">
+      <div class="counter-number" data-target="1455">0</div>
+      <div class="counter-label">Factory entries in<br>H&M's published<br>supply list</div>
+    </div>
+  </div>
+
+  <p class="scene3-body reveal reveal-delay-3">
+    The machine runs flawlessly. Production scales up quarter after quarter. New stores open faster than you can visit them. The question isn't whether it works — it's what happens after the sale.
+  </p>
+</section>
+
+<!-- ==================== SCENE 4 — PLOT TWIST ==================== -->
+<section class="scene" id="scene4" style="min-height:auto; padding-top:120px; padding-bottom:120px;">
+  <p class="section-label reveal">03 — The Twist</p>
+  <p class="reveal-text reveal reveal-delay-1">You expected the factory to be the villain.</p>
+
+  <div class="split-container reveal reveal-delay-2">
+    <div class="split-panel dark">
+      <div class="split-label bad">What you assumed</div>
+      <div class="split-title">Factories create mountains of waste</div>
+      <div class="split-body">The assumption: massive production = massive industrial waste choking India's landfills. The brands are dumping. The factories are polluting. Right?</div>
+      <div class="big-number red">~54%</div>
+      <div class="big-unit">of all textile waste is pre-consumer<br>factory scrap</div>
+    </div>
+    <div class="split-panel lit">
+      <div class="split-label good">What actually happens</div>
+      <div class="split-title">97% of factory waste never reaches a landfill</div>
+      <div class="split-body">Factory fabric scraps are economically valuable. They are systematically collected, recycled, and converted back into industrial products, rags, and yarn. The system works.</div>
+      <div class="big-number green">97%</div>
+      <div class="big-unit">of pre-consumer factory waste<br>is successfully recovered</div>
+    </div>
+  </div>
+
+  <p class="reveal-text reveal reveal-delay-3" style="color: var(--rust); font-style: italic;">
+    The factory cleaned up its mess.<br>The camera slowly turns toward you.
+  </p>
+</section>
+
+<!-- ==================== SCENE 5 — WARDROBE ==================== -->
+<section class="scene" id="scene5">
+  <p class="section-label reveal">04 — Your Wardrobe</p>
+
+  <div class="wardrobe-visual reveal reveal-delay-1" id="wardrobeViz">
+    <div class="wardrobe-label-new">New Arrivals →</div>
+    <div class="wardrobe-label-old">← Old Clothes</div>
+    <div class="wardrobe-inner" id="wardrobeInner">
+      <!-- JS will populate -->
+    </div>
+  </div>
+
+  <h2 class="scene5-question reveal reveal-delay-2">
+    New clothes push in.<br>Old clothes fall out.<br><span>Where exactly do they go?</span>
+  </h2>
+
+  <p class="scene3-body reveal reveal-delay-3" style="text-align:center;">
+    In India, 3 million tonnes of post-consumer clothing waste is generated every year. Most of it is thrown into the same bin as yesterday's lunch — making recycling chemically impossible.
+  </p>
+</section>
+
+<!-- ==================== SCENE 6 — WHY THE BIN KILLS IT ==================== -->
+<section class="scene" id="scene6" style="min-height:auto; padding-top:120px; padding-bottom:120px;">
+  <p class="section-label reveal">05 — The Point of No Return</p>
+
+  <div class="waste-flow reveal reveal-delay-1">
+    <div class="flow-step">
+      <div class="flow-icon clean">👕</div>
+      <div class="flow-step-title">Clean Garment</div>
+      <div class="flow-step-body">Leaves your wardrobe. Still usable. Still recyclable.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-icon mixed">🗑️</div>
+      <div class="flow-step-title">Mixed Bin</div>
+      <div class="flow-step-body">Thrown with wet waste, food, plastic. No segregation.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-icon contaminated">☣️</div>
+      <div class="flow-step-title">Contaminated</div>
+      <div class="flow-step-body">Organic waste binds to fabric fibers. Now chemically unclean.</div>
+    </div>
+    <div class="flow-step">
+      <div class="flow-icon dead">⚰️</div>
+      <div class="flow-step-title">Landfill. Forever.</div>
+      <div class="flow-step-body">No recycling facility will accept it. It is now permanent waste.</div>
+    </div>
+  </div>
+
+  <div class="waste-stats reveal reveal-delay-2">
+    <div class="waste-stat">
+      <div class="waste-number" style="color: var(--ember);">7.07M</div>
+      <div class="waste-desc">Tonnes total textile<br>waste per year<br>in India</div>
+    </div>
+    <div class="waste-stat">
+      <div class="waste-number" style="color: var(--rust);">3M</div>
+      <div class="waste-desc">Tonnes post-consumer<br>clothing discarded<br>by households</div>
+    </div>
+    <div class="waste-stat">
+      <div class="waste-number" style="color: var(--rust);">12–15%</div>
+      <div class="waste-desc">Household textile<br>waste that actually<br>gets recycled</div>
+    </div>
+    <div class="waste-stat">
+      <div class="waste-number" style="color: var(--muted);">17%</div>
+      <div class="waste-desc">Of all textile waste<br>ends up permanently<br>landfilled</div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SCENE 7 — THE HEROES ==================== -->
+<section class="scene" id="scene7">
+  <p class="section-label reveal">06 — The Invisible Heroes</p>
+
+  <blockquote class="hero-quote reveal reveal-delay-1">
+    They are not a last resort. They are the last line.
+  </blockquote>
+
+  <div class="ragpicker-stats reveal reveal-delay-2">
+    <div class="rp-stat">
+      <div class="rp-number">4M+</div>
+      <div class="rp-label">Informal waste<br>workers in India</div>
+    </div>
+    <div class="rp-stat">
+      <div class="rp-number">15%</div>
+      <div class="rp-label">Municipalities save<br>in waste costs</div>
+    </div>
+    <div class="rp-stat">
+      <div class="rp-number">∞</div>
+      <div class="rp-label">Value of what<br>they prevent</div>
+    </div>
+  </div>
+
+  <div class="panipat-block reveal reveal-delay-3">
+    <div class="panipat-title">Panipat — The City That Spins Gold</div>
+    <div class="panipat-body">
+      Not a dump. Not a graveyard. Panipat is the Shoddy Yarn Capital of the World — a resourceful recycling engine that imports worn clothing from the UK, USA, and Japan, shreds it, and spins it into low-cost blankets and industrial yarn that keeps millions warm.
+    </div>
+    <div class="panipat-flow">
+      <span class="pf-tag">Old Sweater · London</span>
+      <span class="pf-arrow">→</span>
+      <span class="pf-tag">Panipat Shredder</span>
+      <span class="pf-arrow">→</span>
+      <span class="pf-tag">New Yarn</span>
+      <span class="pf-arrow">→</span>
+      <span class="pf-tag">Warm Blanket · Delhi</span>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== SCENE 8 — TIMELINE ==================== -->
+<section class="scene" id="scene8">
+  <p class="section-label reveal">07 — The Mirror</p>
+
+  <div class="chart-legend reveal reveal-delay-1">
+    <div class="legend-item"><div class="legend-dot production"></div>Brand Production Growth</div>
+    <div class="legend-item"><div class="legend-dot waste"></div>Post-Consumer Textile Waste</div>
+  </div>
+
+  <div class="timeline-chart reveal reveal-delay-2">
+    <div class="chart-area">
+      <svg class="chart-svg" viewBox="0 0 820 220" preserveAspectRatio="none" id="chartSVG">
+        <!-- Grid lines -->
+        <line x1="0" y1="55" x2="820" y2="55" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="0" y1="110" x2="820" y2="110" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+        <line x1="0" y1="165" x2="820" y2="165" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+
+        <!-- Production line (ember) -->
+        <polyline id="productionLine"
+          points="0,180 137,165 274,140 411,115 548,90 685,70 820,50"
+          fill="none" stroke="#e8832a" stroke-width="2.5"
+          stroke-dasharray="1200" stroke-dashoffset="1200"
+          style="transition: stroke-dashoffset 2.5s ease;"/>
+
+        <!-- Waste line (rust) -->
+        <polyline id="wasteLine"
+          points="0,190 137,175 274,158 411,140 548,120 685,100 820,82"
+          fill="none" stroke="#c4623a" stroke-width="2.5"
+          stroke-dasharray="1200" stroke-dashoffset="1200"
+          style="transition: stroke-dashoffset 2.5s ease 0.3s;"/>
+
+        <!-- Area fills -->
+        <polygon
+          points="0,180 137,165 274,140 411,115 548,90 685,70 820,50 820,220 0,220"
+          fill="url(#prodGrad)" opacity="0.15"/>
+        <polygon
+          points="0,190 137,175 274,158 411,140 548,120 685,100 820,82 820,220 0,220"
+          fill="url(#wasteGrad)" opacity="0.12"/>
+
+        <defs>
+          <linearGradient id="prodGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e8832a"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </linearGradient>
+          <linearGradient id="wasteGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c4623a"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Year dots on production line -->
+        <circle cx="0" cy="180" r="4" fill="#e8832a"/>
+        <circle cx="137" cy="165" r="4" fill="#e8832a"/>
+        <circle cx="274" cy="140" r="4" fill="#e8832a"/>
+        <circle cx="411" cy="115" r="4" fill="#e8832a"/>
+        <circle cx="548" cy="90" r="4" fill="#e8832a"/>
+        <circle cx="685" cy="70" r="4" fill="#e8832a"/>
+        <circle cx="820" cy="50" r="4" fill="#e8832a"/>
+      </svg>
+    </div>
+    <div class="year-labels">
+      <span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span><span>2026</span>
+    </div>
+  </div>
+
+  <h2 class="the-question reveal reveal-delay-3">
+    The factory cleaned up its mess.
+    <span class="line2">Did you clean up yours?</span>
+  </h2>
+</section>
+
+<!-- ==================== SCENE 9 — CLOSING ==================== -->
+<section class="scene" id="scene9">
+  <p class="section-label reveal">08 — Your Move</p>
+
+  <h2 class="closing-title reveal reveal-delay-1">
+    You now know<br>where it <em>goes.</em>
+  </h2>
+
+  <div class="action-cards reveal reveal-delay-2">
+    <div class="action-card">
+      <div class="action-icon">🫶</div>
+      <div class="action-title">Donate</div>
+      <div class="action-body">Before your next purchase, ask: can any of what I own today find a new owner? Donation keeps clothes in circulation for years.</div>
+      <div class="action-impact">↑ Extends garment life by 2–3 years</div>
+    </div>
+    <div class="action-card">
+      <div class="action-icon">♻️</div>
+      <div class="action-title">Segregate</div>
+      <div class="action-body">Keep old clothes separate from wet waste. A clean, dry garment can be recycled. A contaminated one cannot. This single act changes everything.</div>
+      <div class="action-impact">↑ Prevents permanent landfilling</div>
+    </div>
+    <div class="action-card">
+      <div class="action-icon">🧵</div>
+      <div class="action-title">Buy Less</div>
+      <div class="action-body">The brands will keep producing. The machine doesn't stop. But the question is whether every new garment you buy is one you truly need.</div>
+      <div class="action-impact">↓ Reduces post-consumer waste at source</div>
+    </div>
+  </div>
+
+  <p class="final-line reveal reveal-delay-3">
+    <strong>"What happens next is yours to decide."</strong><br>
+    The thread began in a factory. It passed through a store, through your hands. Where it ends — that part of the story is still being written.
+  </p>
+</section>
+
+<footer class="footer-credit">
+  <p>The Last Thread · Data sourced from H&M Group Q1 2026 Report · Trent Ltd Q4 FY26 Results · Ministry of Textiles India 2026 · Deccan Herald · Project Statecraft</p>
+</footer>
+
+<script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const cursorRing = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top = e.clientY + 'px';
+    setTimeout(() => {
+      cursorRing.style.left = e.clientX + 'px';
+      cursorRing.style.top = e.clientY + 'px';
+    }, 80);
+  });
+
+  // Progress bar
+  window.addEventListener('scroll', () => {
+    const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+    document.getElementById('progressBar').style.width = scrolled + '%';
+
+    // Update nav scene label
+    const scenes = document.querySelectorAll('.scene');
+    const labels = ['01 — The Scale', '02 — The Brands', '03 — The Machine', '04 — The Twist', '05 — Your Wardrobe', '06 — The Point of No Return', '07 — The Invisible Heroes', '08 — The Mirror', '09 — Your Move'];
+    scenes.forEach((scene, i) => {
+      const rect = scene.getBoundingClientRect();
+      if (rect.top <= window.innerHeight / 2 && rect.bottom >= window.innerHeight / 2) {
+        document.getElementById('navScene').textContent = labels[i] || '';
+      }
+    });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+  reveals.forEach(el => revealObserver.observe(el));
+
+  // Brand bar fills
+  const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const fill = entry.target.querySelector('.brand-bar-fill');
+        if (fill) fill.style.width = fill.dataset.width + '%';
+      }
+    });
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.brand-card').forEach(card => barObserver.observe(card));
+
+  // Counter animation
+  function animateCounter(el, target, duration = 2000) {
+    let start = 0;
+    const step = target / (duration / 16);
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= target) { el.textContent = target.toLocaleString(); clearInterval(timer); return; }
+      el.textContent = Math.floor(start).toLocaleString();
+    }, 16);
+  }
+
+  const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const counters = entry.target.querySelectorAll('[data-target]');
+        counters.forEach(c => animateCounter(c, parseInt(c.dataset.target)));
+        counterObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  const counterGrid = document.querySelector('.counter-grid');
+  if (counterGrid) counterObserver.observe(counterGrid);
+
+  // Chart line animation
+  const chartObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const pl = document.getElementById('productionLine');
+        const wl = document.getElementById('wasteLine');
+        if (pl) pl.style.strokeDashoffset = '0';
+        if (wl) wl.style.strokeDashoffset = '0';
+        chartObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  const chartArea = document.querySelector('.chart-area');
+  if (chartArea) chartObserver.observe(chartArea);
+
+  // Wardrobe animation
+  function buildWardrobe() {
+    const inner = document.getElementById('wardrobeInner');
+    if (!inner) return;
+    const heights = [120, 95, 140, 110, 130, 100, 120, 90, 135, 105, 115, 125, 98, 142, 108];
+    heights.forEach((h, i) => {
+      const g = document.createElement('div');
+      g.className = i >= 9 ? 'garment garment-new' : 'garment garment-old';
+      g.style.height = h + 'px';
+      g.style.animationDelay = (i * 0.1) + 's';
+      inner.appendChild(g);
+    });
+  }
+  buildWardrobe();
+
+  // Stagger wardrobe new clothes continuously
+  setInterval(() => {
+    const inner = document.getElementById('wardrobeInner');
+    if (!inner) return;
+    const newCloth = document.createElement('div');
+    newCloth.className = 'garment garment-new';
+    newCloth.style.height = (90 + Math.random() * 60) + 'px';
+    inner.appendChild(newCloth);
+    if (inner.children.length > 20) inner.removeChild(inner.firstChild);
+  }, 1800);
+
+  // Hover effect on action cards
+  document.querySelectorAll('.action-card').forEach(card => {
+    card.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+      cursorRing.style.width = '60px';
+      cursorRing.style.height = '60px';
+    });
+    card.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(1)';
+      cursorRing.style.width = '36px';
+      cursorRing.style.height = '36px';
+    });
+  });
+</script>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Cinematic glow follows cursor
+  const glow = document.getElementById('cinematicGlow');
+  document.addEventListener('mousemove', (e) => {
+    glow.style.left = e.clientX + 'px';
+    glow.style.top = e.clientY + 'px';
+  });
+
+  // Parallax depth on scenes
+  gsap.utils.toArray('.scene').forEach((scene, index) => {
+    gsap.to(scene, {
+      backgroundPositionY: `${80 + index * 10}%`,
+      ease: "none",
+      scrollTrigger: {
+        trigger: scene,
+        scrub: true
+      }
+    });
+  });
+
+  // Floating particles
+  const scene1 = document.getElementById('scene1');
+  for (let i = 0; i < 20; i++) {
+    const particle = document.createElement('div');
+    particle.classList.add('floating-particle');
+    particle.style.left = Math.random() * 100 + '%';
+    particle.style.top = Math.random() * 100 + '%';
+    scene1.appendChild(particle);
+
+    gsap.to(particle, {
+      y: -100 - Math.random() * 200,
+      x: (Math.random() - 0.5) * 100,
+      opacity: 0,
+      duration: 4 + Math.random() * 4,
+      repeat: -1,
+      ease: "power1.out",
+      delay: Math.random() * 2
+    });
+  }
+
+  // Scroll pinned dramatic reveal
+  ScrollTrigger.create({
+    trigger: "#scene4",
+    start: "top top",
+    end: "+=100%",
+    pin: true,
+    scrub: 1
+  });
+
+  // Wardrobe landfill animation
+  const wardrobe = document.querySelector('#scene5 .wardrobe-visual');
+  const landfill = document.createElement('div');
+  landfill.className = 'landfill-pile';
+  wardrobe.appendChild(landfill);
+
+  ScrollTrigger.create({
+    trigger: "#scene5",
+    start: "top center",
+    end: "bottom center",
+    scrub: true,
+    onUpdate: self => {
+      landfill.style.height = (self.progress * 70) + '%';
+    }
+  });
+
+  // Action cards cinematic entrance
+  gsap.utils.toArray('.action-card').forEach((card, i) => {
+    gsap.from(card, {
+      y: 80,
+      opacity: 0,
+      duration: 1.2,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: card,
+        start: "top 85%"
+      },
+      delay: i * 0.12
+    });
+  });
+
+  // Timeline chart dramatic draw
+  gsap.to("#productionLine", {
+    strokeDashoffset: 0,
+    scrollTrigger: {
+      trigger: "#scene8",
+      start: "top 70%",
+      scrub: 1
+    }
+  });
+
+  gsap.to("#wasteLine", {
+    strokeDashoffset: 0,
+    scrollTrigger: {
+      trigger: "#scene8",
+      start: "top 70%",
+      scrub: 1
+    }
+  });
+
+  // Scene overlay transitions
+  const overlay = document.getElementById('sceneOverlay');
+
+  gsap.utils.toArray('.scene').forEach(scene => {
+    ScrollTrigger.create({
+      trigger: scene,
+      start: "top center",
+      end: "bottom center",
+      onEnter: () => {
+        gsap.fromTo(overlay,
+          { opacity: 0.18 },
+          { opacity: 0, duration: 1.5 }
+        );
+      }
+    });
+  });
+
+</script>
+
+</body>
+</html>
